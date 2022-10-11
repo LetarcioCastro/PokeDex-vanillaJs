@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css');
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	position: relative;
+	padding: 40px;
+	font-family: 'Poppins', sans-serif;
+	background-image: url(imgs/back.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: default;
+	background-attachment: fixed;
+	overflow-x: hidden;
+	overflow-y: overlay;
+}
+
+::-webkit-scrollbar {
+	width: 18px;
+	height: 18px;
+	transition: 2s;
+	background: transparent;
+	padding: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+	border: 5px solid transparent;
+	border-radius: 20px;
+	box-shadow: inset 0px 0px 100px #11111167;
+}
+
+body .head {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 60px;
+}
+
+body .head h1 {
+	color: rgba(19, 19, 19, 0.753);
+}
+
+body .head label {
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	cursor: pointer;
+	background-color: rgba(19, 19, 19, 0.487);
+	border-radius: 30px;
+	box-shadow: inset 2px 3px 3px #0003;
+}
+
+body .head label i {
+	font-size: 1.9rem;
+	padding: 15px;
+	color: white;
+}
+
+body .head input {
+	height: 100%;
+	width: 0;
+	padding: 15px 0;
+	padding-right: 0px;
+	outline: none;
+	font-size: 17px;
+	border: 0;
+	font-family: inherit;
+	background-color: transparent;
+	color: white;
+	transition: width .2s ease;
+}
+
+
+body .head input:valid,
+body .head input:focus {
+	width: 280px;
+	padding-right: 15px;
+}
+
+body .pokedex {
+	display: flex;
+	gap: 30px;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: center;
+	width: 100%;
+	margin-top: 40px;
+	min-height: calc(100vh - 270px);
+}
+
+body .pokedex>div {
+	--x: 0deg;
+	--y: 0deg;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	
+	gap: 10px;
+	min-width: 330px;
+	flex-basis: calc(20% - 30px*0.80);
+	perspective: 500;
+	padding: 30px 30px 50px 30px;
+	text-align: center;
+	border-radius: 30px;
+	background-color: rgba(19, 19, 19, 0.487);
+	transform: rotateY(0deg) rotateX(0deg);
+	color: white;
+	cursor: pointer;
+	transition: transform .2s ease;
+}
+
+body .pokedex>div[hide] {
+	display: none;
+}
+
+body .pokedex>div img {
+	width: 100%;
+	transform-style: preserve-3d;
+	transform: rotateY(0deg) rotateX(0deg);
+}
+
+body .pokedex>div:hover img {
+	transform: rotateY(var(--x)) rotateX(var(--y)) translateZ(80px) scale(1.25);
+}
+
+
+body .pokedex>div circle {
+	content: '';
+	display: block;
+	position: absolute;
+	top: calc(38% - 95px);
+	left: calc(50% - 95px);
+	height: 190px;
+	width: 190px;
+	z-index: -1;
+	border-radius: 95px;
+	transform: rotateY(0deg) rotateX(0deg);
+}
+
+body .pokedex>div:hover circle {
+	transform: rotateY(var(--x)) rotateX(var(--y)) translateZ(30px) scale(1.1);
+}
+
+body .pokedex>div div {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+body .pokedex>div div.imgContent {
+	width: 100%;
+	height: 275.8px;
+	gap: 0;
+}
+
+body .pokedex>div div.imgContent img {
+	height: 100%;
+}
+
+body .pokedex>div h1 {
+	overflow: hidden;
+	white-space: nowrap
+}
+
+body .pokedex>div div span {
+	font-size: 0.95rem;
+	padding: 5px 10px;
+	border-radius: 7px;
+}
+
+body .pokedex>div * {
+	transition: transform .2s ease;
+	pointer-events: none;
+}
+
+body .pokedex>div::after {
+	content: 'More details';
+	position: absolute;
+	height: 0px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+	transition: height .2s ease;
+}
+
+body .pokedex>div:hover::after {
+	height: 35px;
+}
+
+body[modalOpen] {
+	overflow: hidden !important;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	display: grid;
+	place-items: center;
+	padding: 40px;
+	height: 100vh;
+	overflow: overlay;
+	visibility: hidden;
+	backdrop-filter: blur(2px);
+	background-color: rgba(19, 19, 19, 0.512);
+	opacity: 0;
+	transition: opacity .3s ease;
+}
+
+.modal[open] {
+	visibility: visible;
+	opacity: 1;
+}
+
+.modal .window {
+	position: relative;
+	width: 500px;
+	max-width: 90% !important;
+	padding: 20px 30px;
+	background-color: rgb(38, 38, 38);
+	border-radius: 20px;
+	color: white;
+	transform: translateY(50vh);
+	transition: .25s transform ease;
+}
+
+@media (max-width: 600px) {
+	.modal .window {
+		width: 100%;
+	}
+	.modal {
+		padding: 40px 5px;
+	}
+	body > .head {
+		flex-direction: column;
+		padding-bottom: 90px;
+	}
+	body .head label {
+		position: relative;
+	}
+}
+
+.modal[open] .window {
+	transform: translateY(0vh);
+}
+
+.modal[open] .window .img img {
+	width: 100%;
+}
+
+.modal .window h1 {
+	color: white;
+}
+
+.modal .window i {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 2.4rem;
+	cursor: pointer;
+}
+
+.modal .window .content>div {
+	padding: 20px 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+
+.modal .window .content>div h2 {
+	margin-bottom: 0px;
+	width: 100%;
+}
+
+.modal .window .content>div h3 {
+	margin-right: 20px;
+}
+
+.modal .window .content span {
+	padding: 10px 20px;
+	border-radius: 7px;
+}
+
+.bug {
+	background-color: #a9d00f;
+}
+
+.dark {
+	background-color: #4b4859;
+}
+
+.dragon {
+	background-color: #0b71c0;
+}
+
+.electric {
+	background-color: #efb20b;
+}
+
+.fairy {
+	background-color: #e677d9;
+}
+
+.fighting {
+	background-color: #cf2a53;
+}
+
+.fire {
+	background-color: #f88914;
+}
+
+.flying {
+	background-color: #7098ee;
+}
+
+.ghost {
+	background-color: #5e71c7;
+}
+
+.grass {
+	background-color: #07a64e;
+}
+
+.ground {
+	background-color: #b9541d;
+}
+
+.ice {
+	background-color: #37c9b3;
+}
+
+.normal {
+	background-color: #8f8f8f;
+}
+
+.poison {
+	background-color: #8e38b6;
+}
+
+.psychic {
+	background-color: #f45f64;
+}
+
+.rock {
+	background-color: #caa024;
+}
+
+.steel {
+	background-color: #1a7993;
+}
+
+.water {
+	background-color: #3fa0e0;
+}
+
+.nextPokemos {
+	position: absolute;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+	height: 100px;
+	transform: translateY(90px);
+	left: calc(50% - 90px);
+	transition: transform .3s ease;
+	overflow: hidden;
+}
+
+
+.nextPokemos button {
+	outline: none;
+	padding: 10px 20px;
+	font-size: 20px;
+	background-color: rgba(38, 38, 38, 0.648);
+	color: white;
+	border: 0;
+	border-radius: 50px;
+	cursor: pointer;
+	transform: translateY(90px);
+	transition: .1s ease;
+	transition-property: background-color, transform;
+}
+
+.nextPokemos[open] button {
+	transform: translateY(0px);
+}
+
+.nextPokemos button:hover {
+	background-color: rgba(38, 38, 38, 0.902);
+}
+
+.loaderConteiner {
+	position: fixed;
+	top: 20px;
+	left: calc(50% - 30px);
+	width: 60px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(19, 19, 19, 0.487);
+	border-radius: 50%;
+	z-index: 9;
+	transform: translateY(-100px);
+	transition: transform .3s ease;
+}
+
+.loaderConteiner[open] {
+	transform: translateY(-0px);
+}
+
+.spinner {
+  -webkit-animation: rotate 2s linear infinite;
+          animation: rotate 2s linear infinite;
+  z-index: 2;
+  width: 50px;
+  height: 50px;
+}
+.spinner .path {
+  stroke: #fff;
+  stroke-linecap: round;
+  -webkit-animation: dash 1.5s ease-in-out infinite;
+          animation: dash 1.5s ease-in-out infinite;
+}
+
+@-webkit-keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
